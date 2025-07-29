@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expo Campus Digital Project-Arte</title>
+    <link rel="icon" href="images/expo_logo.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variables y reset */
+        :root {
+            --primary: #3498db;
+            --secondary: #2c3e50;
+            --accent: #e74c3c;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --purple: #9b59b6;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Estilos del menú sticky */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: var(--transition);
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+        
+        .logo span {
+            color: var(--primary);
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-item {
+            margin-left: 1.5rem;
+        }
+        
+        .nav-item a {
+            text-decoration: none;
+            color: var(--secondary);
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .nav-item a:hover {
+            color: var(--primary);
+        }
+        
+        .nav-item a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: var(--transition);
+        }
+        
+        .nav-item a:hover::after {
+            width: 100%;
+        }
+        
+        .hamburger {
+            display: none;
+            cursor: pointer;
+        }
+        
+        .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px auto;
+            background-color: var(--secondary);
+            transition: var(--transition);
+        }
+        
+        /* Sección Inicio */
+        .inicio {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            overflow: hidden;
+        }
+        
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        #bg-video {
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+        }
+        
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(44, 62, 80, 0.8), rgba(52, 152, 219, 0.7));
+        }
+        
+        .inicio-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+        
+        .inicio-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: fadeInDown 1s ease;
+        }
+        
+        .inicio-content p {
+            font-size: 1.5rem;
+            margin-bottom: 2.5rem;
+            font-weight: 300;
+            animation: fadeInUp 1s ease 0.3s forwards;
+            opacity: 0;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            animation: fadeIn 1s ease 0.6s forwards;
+            opacity: 0;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid white;
+            margin-left: 15px;
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Sección Objetivo */
+        .section {
+            padding: 100px 0;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary);
+            border-radius: 2px;
+        }
+        
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+        
+        .col-text, .col-slider {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .col-text h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--secondary);
+        }
+        
+        .col-text p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .slider {
+            position: relative;
+            height: 300px;
+            border-radius: 15px;
+            background-color: white; /* Fondo blanco adicional */
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .slider-track {
+            display: flex;
+            height: 100%;
+            animation: slide 30s linear infinite;
+        }
+        
+        .slide {
+            min-width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .slide img {
+            max-width: 80%;
+            max-height: 80%;
+            object-fit: contain;
+        }
+        
+        /* Sección Licenciaturas */
+        .licenciaturas {
+            background-color: #f0f5f9;
+        }
+        
+        .filtros {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 50px;
+        }
+        
+        .btn-filtro {
+            background-color: white;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+        
+        .btn-filtro:hover, .btn-filtro.active {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        /* Sección Proyectos */
+        .grid-proyectos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+        .card:nth-child(4) { animation-delay: 0.4s; }
+        .card:nth-child(5) { animation-delay: 0.5s; }
+        .card:nth-child(6) { animation-delay: 0.6s; }
+        
+        .card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-img {
+            position: relative;
+            height: 220px;
+            overflow: hidden;
+        }
+        
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        
+        .card:hover .card-img img {
+            transform: scale(1.1);
+        }
+        
+        .tag {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 6px 20px;
+            border-radius: 20px;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: bold;
+            z-index: 2;
+        }
+        
+        .sistemas { background-color: var(--primary); }
+        .mercadotecnia { background-color: var(--accent); }
+        .diseno { background-color: var(--purple); }
+        .derecho { background-color: var(--warning); }
+        .criminologia { background-color: var(--success); }
+        
+        .card-content {
+            padding: 25px;
+        }
+        
+        .card-content h3 {
+            margin-bottom: 10px;
+            color: var(--secondary);
+            font-size: 1.4rem;
+            /* Prevenir desbordamiento en títulos largos */
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .card-content p {
+            margin-bottom: 20px;
+            color: #6c757d;
+            line-height: 1.6;
+            /* Prevenir desbordamiento en descripciones largas */
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .btn-vermas {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-vermas:hover {
+            background-color: #2980b9;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        /* Modal - Mejoras significativas */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            overflow: auto;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .modal-content {
+            position: relative;
+            background-color: white;
+            margin: 5% auto;
+            padding: 40px;
+            width: 90%; /* Más ancho en móviles */
+            max-width: 900px;
+            border-radius: 15px;
+            animation: slideDown 0.5s ease;
+            max-height: 90vh; /* Altura máxima */
+            overflow-y: auto; /* Scroll interno */
+        }
+        
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 2rem;
+            color: #6c757d;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 10; /* Asegurar que esté por encima */
+        }
+        
+        .close:hover {
+            color: var(--accent);
+            transform: rotate(90deg);
+        }
+        
+        .modal-header {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        .modal-tag {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            color: white;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .modal-header h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+            padding-right: 30px; /* Espacio para el botón cerrar */
+        }
+        
+        .modal-body {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        /* Estilos para el carrusel de imágenes */
+        .modal-carousel {
+            flex: 1;
+            min-width: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .carousel-container {
+            width: 100%;
+            height: 300px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .carousel-slides {
+            display: flex;
+            height: 100%;
+            transition: transform 0.5s ease;
+        }
+        
+        .carousel-slide {
+            min-width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f5f7fa;
+        }
+        
+        .carousel-slide img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            padding: 20px;
+        }
+        
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 15px;
+            z-index: 10;
+        }
+        
+        .carousel-nav button {
+            background-color: rgba(255, 255, 255, 0.7);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--secondary);
+            transition: var(--transition);
+        }
+        
+        .carousel-nav button:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .carousel-pagination {
+            position: absolute;
+            bottom: 15px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            z-index: 5;
+        }
+        
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .carousel-dot.active {
+            background-color: var(--primary);
+            transform: scale(1.2);
+        }
+        
+        .modal-info {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .modal-info h4 {
+            margin-bottom: 15px;
+            color: var(--secondary);
+            font-size: 1.3rem;
+        }
+        
+        .modal-info p {
+            margin-bottom: 20px;
+            line-height: 1.7;
+            word-wrap: break-word; /* Romper palabras largas */
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .project-link:hover {
+            color: #2980b9;
+            transform: translateX(5px);
+        }
+        
+        /* Pie de página */
+        footer {
+            background-color: var(--secondary);
+            color: white;
+            padding: 70px 0 0;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 50px;
+            margin-bottom: 50px;
+        }
+        
+        .footer-col {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .footer-col h4 {
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-col h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--primary);
+        }
+        
+        .footer-col p {
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+        
+        .social-icons a:hover {
+            background-color: var(--primary);
+            transform: translateY(-5px);
+        }
+        
+        .footer-links li {
+            list-style: none;
+            margin-bottom: 15px;
+        }
+        
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding: 25px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Animaciones */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slide {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-500%); }
+        }
+        
+        /* Responsive - Mejoras significativas para móviles */
+        @media (max-width: 992px) {
+            .inicio-content h1 {
+                font-size: 2.8rem;
+            }
+            
+            .inicio-content p {
+                font-size: 1.3rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+            
+            .hamburger.active .bar:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .hamburger.active .bar:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
+            }
+            
+            .hamburger.active .bar:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
+            }
+            
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                flex-direction: column;
+                background-color: white;
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+                padding: 20px 0;
+            }
+            
+            .nav-menu.active {
+                left: 0;
+            }
+            
+            .nav-item {
+                margin: 15px 0;
+            }
+            
+            .section {
+                padding: 70px 0;
+            }
+            
+            .inicio-content h1 {
+                font-size: 2.3rem;
+            }
+            
+            .inicio-content p {
+                font-size: 1.1rem;
+            }
+            
+            .modal-body {
+                flex-direction: column;
+            }
+            
+            .carousel-container {
+                height: 250px;
+            }
+            
+            /* Mejoras específicas para móviles */
+            .modal-content {
+                width: 95%;
+                padding: 30px 20px;
+                margin: 10% auto;
+            }
+            
+            .modal-header h3 {
+                font-size: 1.6rem;
+                padding-right: 40px;
+            }
+            
+            .modal-info h4 {
+                font-size: 1.2rem;
+            }
+            
+            .modal-info p {
+                font-size: 1rem;
+            }
+            
+            .grid-proyectos {
+                grid-template-columns: 1fr; /* Una sola columna en móviles */
+            }
+            
+            .card-content h3 {
+                -webkit-line-clamp: 2; /* Máximo 2 líneas para títulos */
+            }
+            
+            .card-content p {
+                -webkit-line-clamp: 4; /* Máximo 4 líneas para descripciones */
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .inicio-content h1 {
+                font-size: 2rem;
+            }
+            
+            .btn-container {
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .btn-secondary {
+                margin-left: 0;
+            }
+            
+            .carousel-container {
+                height: 200px;
+            }
+            
+            /* Ajustes adicionales para móviles pequeños */
+            .modal-content {
+                width: 98%;
+                padding: 20px 15px;
+                margin: 5% auto;
+            }
+            
+            .modal-header h3 {
+                font-size: 1.4rem;
+            }
+            
+            .modal-info h4 {
+                font-size: 1.1rem;
+            }
+            
+            .modal-info p {
+                font-size: 0.95rem;
+            }
+            
+            .project-link {
+                font-size: 0.9rem;
+            }
+            
+            .modal-footer {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            /* Prevenir desbordamiento en textos largos */
+            .modal-info p, .modal-header h3 {
+                word-break: break-word;
+                overflow-wrap: break-word;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Menú Fijo Superior -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="logo">Project-<span>Arte</span></div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="#inicio">Inicio</a></li>
+                <li class="nav-item"><a href="#objetivo">Objetivo</a></li>
+                <li class="nav-item"><a href="#licenciaturas">Licenciaturas</a></li>
+                <li class="nav-item"><a href="#proyectos">Proyectos</a></li>
+                <li class="nav-item"><a href="#contacto">Contacto</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Sección 1: INICIO -->
+    <section id="inicio" class="inicio">
+        <div class="video-background">
+            <video autoplay muted loop id="bg-video">
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-group-of-young-people-studying-43568-large.mp4" type="video/mp4">
+                Tu navegador no soporta videos.
+            </video>
+            <div class="overlay"></div>
+        </div>
+        <div class="inicio-content">
+            <h1>expo campus digital Project-Arte</h1>
+            <p>"Conecta ideas, comparte talento e inspira el futuro"</p>
+            <div class="btn-container">
+                <a href="#proyectos" class="btn">Ver Proyectos</a>
+                <a href="#objetivo" class="btn btn-secondary">Conocer Más</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección 2: OBJETIVO -->
+    <section id="objetivo" class="section objetivo">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nuestra Misión</h2>
+            </div>
+            <div class="row">
+                <div class="col-text">
+                    <h3>Uniendo talentos, creando futuro</h3>
+                    <p>Project-Arte nace de la necesidad de crear un puente entre el talento universitario y el mundo exterior. Nuestra plataforma digital unifica proyectos de diversas licenciaturas para mostrar el ingenio, la creatividad y la innovación de nuestros estudiantes.</p>
+                    <p>Creemos que cada disciplina tiene algo valioso que aportar, y al unirlas en un solo espacio, fomentamos la colaboración interdisciplinaria y generamos soluciones más completas a los desafíos actuales.</p>
+                </div>
+                <div class="col-slider">
+                    <div class="slider">
+                        <div class="slider-track">
+                            <div class="slide"><img src="images/tulogo.png" alt="Logo" style="max-height: 200px;">
+                            </div>
+                            <div class="slide"><img src="images/siscom.png" alt="Sistemas" style="max-height: 200px;">
+                            </div>
+                            <div class="slide"><img src="images/merca.png" alt="Mercadotecnia" style="max-height: 200px;">
+                            </div>
+                            <div class="slide"><img src="images/diseno.png" alt="Diseño Gráfico" style="max-height: 200px;">
+                            </div>
+
+                            <div class="slide"><img src="images/derecho.png" alt="Derecho" style="max-height: 200px;">
+                            </div>
+                            <div class="slide"><img src="images/crimi.png" alt="Criminología" style="max-height: 200px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección 3: LICENCIATURAS -->
+    <section id="licenciaturas" class="section licenciaturas">
+        <div class="container">
+            <div class="section-title">
+                <h2>Explora por Licenciatura</h2>
+                <p>Filtra los proyectos por área de conocimiento</p>
+            </div>
+            <div class="filtros">
+                <button class="btn-filtro active" data-filter="todos">Todos</button>
+                <button class="btn-filtro" data-filter="sistemas">Sistemas</button>
+                <button class="btn-filtro" data-filter="mercadotecnia">Mercadotecnia</button>
+                <button class="btn-filtro" data-filter="diseno">Diseño Gráfico</button>
+                <button class="btn-filtro" data-filter="derecho">Derecho</button>
+                <button class="btn-filtro" data-filter="criminologia">Criminología</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección 4: PROYECTOS -->
+    <section id="proyectos" class="section proyectos">
+        <div class="container">
+            <div class="section-title">
+                <h2>Proyectos Destacados</h2>
+                <p>Descubre el talento de nuestros estudiantes</p>
+            </div>
+            <div class="grid-proyectos">
+                <!-- Proyecto 1 -->
+                <article class="card" data-category="sistemas">
+                    <div class="card-img">
+                        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Plataforma de Gestión">
+                        <span class="tag sistemas">Sistemas</span>
+                    </div>
+                    <div class="card-content">
+                        <h3>Plataforma de Gestión de Proyectos Escolares</h3>
+                        <p>Sistema integral para la gestión de proyectos escolares interdisciplinarias con enfoque en UX/UI.</p>
+                        <button class="btn-vermas" data-id="1">Ver Detalles</button>
+                    </div>
+                </article>
+                
+                <!-- Proyecto 2 -->
+                <article class="card" data-category="mercadotecnia">
+                    <div class="card-img">
+                        <img src="images/dis.png" alt="Campaña Digital">
+                        <span class="tag mercadotecnia">Diseño Gráfico</span>
+                    </div>
+                    <div class="card-content">
+                        <h3>Campaña Digital "Lo que ves, es lo que hay"</h3>
+                        <p>Galería fotográfica que busca capturar emociones profundas con un alto impacto personal y social.</p>
+                        <button class="btn-vermas" data-id="2">Ver Detalles</button>
+                    </div>
+                </article>
+                
+                <!-- Proyecto 3 -->
+                <article class="card" data-category="diseno">
+                    <div class="card-img">
+                        <img src="images/marca2.png" alt="Identidad de Marca">
+                        <span class="tag diseno">Mercadotecnia</span>
+                    </div>
+                    <div class="card-content">
+                        <h3>Gestión Estratégica de una Marca</h3>
+                        <p>Rediseño completo de la estrategia e identidad visual para posicionarse en el mercado de los startup.</p>
+                        <button class="btn-vermas" data-id="3">Ver Detalles</button>
+                    </div>
+                </article>
+                
+                <!-- Proyecto 4 -->
+                <article class="card" data-category="derecho">
+                    <div class="card-img">
+                        <img src="images/der1.png" alt="Reforma Legal">
+                        <span class="tag derecho">Derecho</span>
+                    </div>
+                    <div class="card-content">
+                        <h3>Construcción y Gestión Estratégica de una Marca</h3>
+                        <p>Uso de herramientas legales y jurídicas de manera estratégica para la gestiòn de una marca.</p>
+                        <button class="btn-vermas" data-id="4">Ver Detalles</button>
+                    </div>
+                </article>
+                
+                <!-- Proyecto 5 -->
+                <article class="card" data-category="criminologia">
+                    <div class="card-img">
+                        <img src="images/crim1.png" alt="Análisis Forense">
+                        <span class="tag criminologia">Criminología</span>
+                    </div>
+                    <div class="card-content">
+                        <h3>Simular Levantamiento de un Cuerpo</h3>
+                        <p>Los estudiantes de la Licenciatura en Criminología y Criminalística del grupo 3A, turno matutino, llevarán a cabo la simulación del levantamiento de un cuerpo, aplicando rigurosamente las técnicas y protocolos especializados de la criminalística.</p>
+                        <button class="btn-vermas" data-id="5">Ver Detalles</button>
+                    </div>
+                </article>
+                
+                <!-- Proyecto 6 -->
+                <article class="card" data-category="diseno">
+                    <div class="card-img">
+                        <img src="images/disenoch.png" alt="App Educativa">
+                        <span class="tag sistemas">Diseño Gráfico</span>
+                    </div>
+                    <div class="card-content">
+                        <h3>Expresión Artística Creativa Digital</h3>
+                        <p>En la asignatura de Expresión Gráfica, correspondiente al tercer cuatrimestre del programa de Diseño Gráfico Digital, los estudiantes adquieren y perfeccionan competencias en comunicación visual.</p>
+                        <button class="btn-vermas" data-id="6">Ver Detalles</button>
+                    </div>
+                </article>
+
+                 <!-- Proyecto 7 -->
+                <article class="card" data-category="sistemas">
+                    <div class="card-img">
+                        <img src="images/geo2.png" alt="App Educativa">
+                        <span class="tag sistemas">Sistemas</span>
+                    </div>
+                    <div class="card-content">
+                        <h3>GeoShield</h3>
+                        <p>GeoShield es una aplicación móvil diseñada por los estudiantes de SISCOM 9A turno vespertino  para mejorar la seguridad cotidiana de las familias mexicanas.</p>
+                        <button class="btn-vermas" data-id="7">Ver Detalles</button>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal para detalles del proyecto -->
+    <div id="modal-proyecto" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-header">
+                <span class="modal-tag sistemas">Sistemas</span>
+                <h3>Plataforma de Gestión de Proyectos</h3>
+            </div>
+            <div class="modal-body">
+                <div class="modal-carousel">
+                    <div class="carousel-container">
+                        <div class="carousel-slides">
+                            <!-- Las imágenes se insertarán dinámicamente con JS -->
+                        </div>
+                        <div class="carousel-nav">
+                            <button class="carousel-prev"><i class="fas fa-chevron-left"></i></button>
+                            <button class="carousel-next"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                        <div class="carousel-pagination"></div>
+                    </div>
+                </div>
+                <div class="modal-info">
+                    <h4>Descripción del Proyecto</h4>
+                    <p>Sistema integral para la gestión de proyectos escolares interdisciplinarias con enfoque en UX/UI.</p>
+                    
+                    <h4>Equipo</h4>
+                    <p>Héctor L. P. Ramírez (Líder de proyecto), Carlos Fernández (Desarrollo Backend), Alex Hau y Jorge Fajardo (Front End), Nestor Arath (Diseño UX/UI), Ángel Guzmán (Analista), Juan Peña y Rubí López (Téster), Zulmy Martínez (Stakeholder)</p>
+                    
+                    <h4>Tecnologías Utilizadas</h4>
+                    <p>HTML5, CSS3, JavaScript, Sublime Text (Editor)</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i> Ver proyecto en vivo</a>
+                <a href="#" class="project-link"><i class="fab fa-github"></i> Repositorio en GitHub</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pie de página -->
+    <footer id="contacto">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <h4>Project-Arte</h4>
+                    <p>"Conecta ideas, comparte talento e inspira el futuro"</p>
+                    <p>Plataforma digital para exhibir proyectos interdisciplinarios de la comunidad universitaria.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Enlaces Rápidos</h4>
+                    <ul class="footer-links">
+                        <li><a href="#inicio"><i class="fas fa-chevron-right"></i> Inicio</a></li>
+                        <li><a href="#objetivo"><i class="fas fa-chevron-right"></i> Objetivo</a></li>
+                        <li><a href="#licenciaturas"><i class="fas fa-chevron-right"></i> Licenciaturas</a></li>
+                        <li><a href="#proyectos"><i class="fas fa-chevron-right"></i> Proyectos</a></li>
+                        <li><a href="#contacto"><i class="fas fa-chevron-right"></i> Contacto</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Contacto</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> Av. Universidades, C.P. 77724, Playa del Carmen, Q.Roo.</p>
+                    <p><i class="fas fa-phone"></i> +52 984 859 7770</p>
+                    <p><i class="fas fa-envelope"></i> contacto@tecplayacar.edu.mx</p>
+                    <p><i class="fas fa-clock"></i> Lunes a Viernes: 9:00 - 20:00 hrs</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Project-Arte. Todos los derechos reservados. | Diseñado con pasión por la comunidad universitaria</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Menú Hamburguesa
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.nav-menu');
+
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navMenu.classList.toggle('active');
+    });
+
+    // Cerrar menú al hacer clic en un enlace
+    document.querySelectorAll('.nav-item a').forEach(link => {
+        link.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
+        });
+    });
+
+    // Efecto de cambio de color en scroll
+    window.addEventListener('scroll', () => {
+        const header = document.querySelector('.header');
+        if (window.scrollY > 50) {
+            header.style.backgroundColor = 'rgba(255, 255, 255, 0.98)';
+            header.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.1)';
+        } else {
+            header.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+            header.style.boxShadow = '0 2px 15px rgba(0, 0, 0, 0.1)';
+        }
+    });
+
+    // Filtrado de proyectos
+    const filtros = document.querySelectorAll('.btn-filtro');
+    const proyectos = document.querySelectorAll('.card');
+
+    filtros.forEach(filtro => {
+        filtro.addEventListener('click', () => {
+            filtros.forEach(f => f.classList.remove('active'));
+            filtro.classList.add('active');
+
+            const filterValue = filtro.getAttribute('data-filter');
+
+            proyectos.forEach(proyecto => {
+                const categoria = proyecto.getAttribute('data-category');
+                if (filterValue === 'todos' || filterValue === categoria) {
+                    proyecto.style.display = 'block';
+                    proyecto.style.animation = 'fadeInUp 0.5s ease forwards';
+                } else {
+                    proyecto.style.display = 'none';
+                }
+            });
+        });
+    });
+
+    // Modal de proyectos
+    const modal = document.getElementById('modal-proyecto');
+    const btnVerMas = document.querySelectorAll('.btn-vermas');
+    const spanCerrar = document.querySelector('.close');
+
+    // Variables para el carrusel
+    let currentSlide = 0;
+
+    // Función para cambiar de slide
+    function goToSlide(index) {
+        const slides = document.querySelectorAll('.carousel-slide');
+        const dots = document.querySelectorAll('.carousel-dot');
+        const carouselSlides = document.querySelector('.carousel-slides');
+
+        if (!slides.length) return; // Salir si no hay diapositivas
+
+        if (index >= slides.length) index = 0;
+        if (index < 0) index = slides.length - 1;
+
+        currentSlide = index;
+
+        carouselSlides.style.transform = `translateX(-${index * 100}%)`;
+
+        dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === index);
+        });
+    }
+    
+    // --- CORRECCIÓN ---
+    // Mover los listeners fuera de initCarousel para que se añadan una sola vez.
+    document.querySelector('.carousel-prev').addEventListener('click', () => {
+        goToSlide(currentSlide - 1);
+    });
+
+    document.querySelector('.carousel-next').addEventListener('click', () => {
+        goToSlide(currentSlide + 1);
+    });
+
+    // Función para inicializar el carrusel
+    function initCarousel(images) {
+        const carouselSlides = document.querySelector('.carousel-slides');
+        const carouselPagination = document.querySelector('.carousel-pagination');
+
+        carouselSlides.innerHTML = '';
+        carouselPagination.innerHTML = '';
+
+        images.forEach((img, index) => {
+            const slide = document.createElement('div');
+            slide.className = 'carousel-slide';
+            slide.innerHTML = `<img src="${img}" alt="Imagen del proyecto">`;
+            carouselSlides.appendChild(slide);
+
+            const dot = document.createElement('div');
+            dot.className = 'carousel-dot';
+            dot.dataset.index = index;
+            dot.addEventListener('click', () => {
+                goToSlide(index);
+            });
+            carouselPagination.appendChild(dot);
+        });
+        
+        // Inicializar en el primer slide
+        goToSlide(0);
+    }
+
+
+    // Datos de ejemplo para los proyectos
+    const proyectosData = {
+        1: {
+            titulo: "Plataforma de Gestión de Proyectos",
+            categoria: "sistemas",
+            descripcion: "Expo Campus Virtual - Project Arte, es un proyecto de desarrollo web realizado por estudiantes de Ing. En Sistemas, cuyo objetivo principal es crear una plataforma digital interactiva que funcione como escaparate público para los proyectos destacados de diversas licenciaturas como Mercadotecnia, Diseño Gráfico, Derecho y Criminología, donde podrás disfrutarlos en una única interfaz intuitiva.",
+            integrantes: "Héctor L. P. Ramírez (Líder de proyecto), Carlos Fernández (Desarrollo Backend), Alex Hau y Jorge Fajardo (Front End), Nestor Arath (Diseño UX/UI), Ángel Guzmán  (Analista), Juan Peña y Rubí López (Téster), Zulmy Martínez (Stakeholder)",
+            tecnologias: "HTML5, CSS3, JavaScript, Sublime Text (Editor)",
+            enlace: "#",
+            imagenes: [
+                "images/sistem1.png",
+                "images/sistem2.png",
+                "images/sistem.jpg"
+            ]
+        },
+        2: {
+            titulo: "Campaña Digital: Lo que ves, es lo que hay",
+            categoria: "diseno",
+            descripcion: "Esta exposición representa el compromiso del alumnado con una comunicación visual significativa, responsable y con propósito, destacando el poder del diseño como herramienta de transformación social, desde su perspectiva creativa y formativa, presenta una propuesta visual que retrata momentos y problemáticas socioculturales relevantes, con el objetivo de generar conciencia, empatía y reflexión en el espectador.",
+            integrantes: "Estudiantes de la Licenciatura en Diseño Gráfico Digital, 3°A turno matutino. Roles: Estrategia, Contenido, Diseño",
+            tecnologias: "Photoshop, Illustrator, Canva",
+            enlace: "#",
+            imagenes: [
+                "images/dis2.png",
+                "images/dis3.png",
+                "images/dis4.png"
+            ]
+        },
+        3: {
+            titulo: "Construcción y Gestión Estratégica de una Marca",
+            categoria: "mercadotecnia",
+            descripcion: "Los estudiantes desarrollaron una empresa enfocándose en construir una marca con identidad clara, coherente y con potencial de generar valor a largo plazo. A lo largo del proyecto, aplicaron un Brand Equity para establecer la percepción que desean generar en el consumidor, así como diseñar una estrategia de posicionamiento que les permita diferenciarse efectivamente dentro de su industria.",
+            integrantes: "Estudiantes del 9no. Cuatrimestre, roles: Diseño Principal, Ilustración, Branding",
+            tecnologias: "Adobe Illustrator, Photoshop, InDesign",
+            enlace: "#",
+            imagenes: [
+                "images/marca2.png",
+                "images/marca3.png",
+                "images/marca4.png"
+            ]
+        },
+        4: {
+            titulo: "Construcción y Gestión Estratégica de una Marca",
+            categoria: "derecho",
+            descripcion: "Se diseñó e implementó un proyecto innovador orientado a optimizar la gestión de una marca, integrando de manera estratégica herramientas legales y jurídicas para garantizar su protección, posicionamiento y desarrollo sostenible en el mercado. Este proyecto se enfoca en el uso de recursos legales para salvaguardar los derechos de propiedad intelectual, fortalecer la identidad de la marca, promover la transparencia en su gestión y resolver conflictos potenciales desde un enfoque jurídico sólido. A través de esta iniciativa, se busca no solo consolidar la presencia de la marca, sino también fomentar una cultura de legalidad que impulse su credibilidad y confianza ante los consumidores.",
+            integrantes: "Estudiantes de la Licenciatura en Derecho de 9A turno vespertino. Roles de los estudiantes: Investigación, Redacción, Análisis Jurídico.",
+            tecnologias: "Sistemas de gestión documental, Plataformas de investigación legal",
+            enlace: "#",
+            imagenes: [
+                "images/der1.png",
+                "https://images.unsplash.com/photo-1589391886645-d51941baf7fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+                "images/marca2.png"
+            ]
+        },
+        5: {
+            titulo: "Simular Levantamiento de un Cuerpo",
+            categoria: "criminologia",
+            descripcion: "Esta actividad práctica tiene como objetivo principal demostrar la capacidad de los estudiantes para recolectar, preservar y analizar evidencias en una escena del crimen, siguiendo estándares profesionales que garantizan la integridad de la investigación forense. A través de este ejercicio, los participantes exhibirán su destreza en el manejo metodológico de la escena del crimen, destacando la precisión, el rigor científico y la atención al detalle que definen esta disciplina. El proyecto no solo refuerza los conocimientos teóricos adquiridos, sino que también consolida habilidades prácticas esenciales para la formación de criminólogos y criminalistas competentes, capaces de responder con profesionalismo ante los desafíos de la investigación criminal.",
+            integrantes: "Alumnos del 3A matutino, Bajo diferentes roles: Análisis Técnico, Psicología Criminal.",
+            tecnologias: "Herramientas de análisis forense, Sistemas de detección de huellas dactilares o biométricas.",
+            enlace: "#",
+            imagenes: [
+                "images/crim2.png",
+                "images/crim3.png",
+                "images/crim4.png",
+                "images/crim5.png"
+            ]
+        },
+        6: {
+            titulo: "Expresión Artística Creativa Digital",
+            categoria: "diseno",
+            descripcion: "Mediante el uso estratégico de imágenes, símbolos, colores y otros elementos gráficos, desarrollan la capacidad de transmitir ideas, emociones y mensajes de forma clara, impactante y creativa, conectando eficazmente con diversos públicos. Esta disciplina encuentra aplicaciones en campos como el arte, la publicidad, la educación y el diseño, donde la expresión visual es clave para generar impacto.",
+            integrantes: "Alumnos del 3er. Cuatrimestre.",
+            tecnologias: "Photoshop, Illustrator.",
+            enlace: "#",
+            imagenes: [
+                "images/d1.png",
+                "images/d2.png",
+                "images/d3.png",
+                "images/d4.png"
+            ]
+        },
+        7: {
+            titulo: "GeoShield",
+            categoria: "sistemas",
+            descripcion: "GeoShield es una aplicación móvil diseñada por los estudiantes de SISCOM 9A turno vespertino  para mejorar la seguridad cotidiana de las familias mexicanas. Su función principal es permitir la comunicación y localización en tiempo real entre sus miembros, en situaciones que generan preocupación o inseguridad moderada, como cuando un hijo no responde a tiempo, un adulto mayor se extravía o alguien tarda en llegar a casa. A diferencia de otras aplicaciones enfocadas en emergencias graves, GeoShield busca ser accesible, discreta y fácil de usar, sin caer en el control o vigilancia invasiva.",
+            integrantes: "Daniel Escoto, Jorge Alegría, Cristian Arista, Edgar Domínguez y Jazmín Matías.",
+            tecnologias: "Python, API de google maps.",
+            enlace: "#",
+            imagenes: [
+                "images/geo.png",
+                "images/geo1.png",
+            ]
+        }
+    };
+
+    btnVerMas.forEach(boton => {
+        boton.addEventListener('click', function() {
+            const proyectoId = this.getAttribute('data-id');
+            const proyecto = proyectosData[proyectoId];
+            if (proyecto) {
+                const modalTag = document.querySelector('.modal-tag');
+                const modalHeader = document.querySelector('.modal-header h3');
+                const modalDesc = document.querySelector('.modal-info p');
+                const modalIntegrantes = document.querySelectorAll('.modal-info p')[1];
+                const modalTecnologias = document.querySelectorAll('.modal-info p')[2];
+
+                modalTag.textContent = proyecto.categoria.charAt(0).toUpperCase() + proyecto.categoria.slice(1);
+                modalTag.className = `modal-tag ${proyecto.categoria}`;
+                modalHeader.textContent = proyecto.titulo;
+                modalDesc.textContent = proyecto.descripcion;
+                modalIntegrantes.innerHTML = `<strong>Equipo:</strong> ${proyecto.integrantes}`;
+                modalTecnologias.innerHTML = `<strong>Tecnologías:</strong> ${proyecto.tecnologias}`;
+
+                initCarousel(proyecto.imagenes);
+
+                modal.style.display = "block";
+                document.body.style.overflow = "hidden";
+            }
+        });
+    });
+
+    // Cerrar modal
+    spanCerrar.addEventListener('click', () => {
+        modal.style.display = "none";
+        document.body.style.overflow = "auto";
+    });
+
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            modal.style.display = "none";
+            document.body.style.overflow = "auto";
+        }
+    });
+
+    // Animación al hacer scroll (opcional pero recomendado)
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = 1;
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.card').forEach(card => {
+        observer.observe(card);
+    });
+});
+</script>
+</body>
+</html>
